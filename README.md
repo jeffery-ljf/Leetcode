@@ -117,3 +117,39 @@ class Solution:
 ```
 #### 提示：
 1.把两个数组有序合并在同一个数组中。
+
+# 5. 最长回文子串
+[leetcode链接](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+
+```python3
+class Solution:
+    def expand(self, s, left, right):
+        while left >= 0 and right < s.__len__() and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return left, right, right - left - 1
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        max_len = 0
+        right = 0
+        left = 0
+        for i in range(s.__len__()):
+            left1, right1, gap1 = self.expand(s, i, i)
+            left2, right2, gap2 = self.expand(s, i, i + 1)
+            if gap2 > gap1:
+                if gap2 > max_len:
+                    right = right2
+                    left = left2
+                    max_len = gap2
+            else:
+                if gap1 > max_len:
+                    right = right1
+                    left = left1
+                    max_len = gap1
+        return s[left + 1 : right]
+```
+#### 提示：
+1.在s的每一个位置运行expand函数，检查以该点为中心的回文长度。
